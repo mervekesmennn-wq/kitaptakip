@@ -1,0 +1,38 @@
+:root {
+  --primary: #EC691F;
+  --primary-hover: #CA5516;
+  --background: #f0f2f5;
+  --text: #1e293b;
+}
+
+body { background: var(--background); color: var(--text); }
+.navbar { min-height: 68px; }
+.navbar-brand { color: var(--text); }
+.nav-search { width: min(520px, 42vw); }
+.nav-search input { border-radius: 8px; }
+.btn-primary { background: var(--primary); border-color: var(--primary); }
+.btn-primary:hover, .btn-primary:focus { background: var(--primary-hover); border-color: var(--primary-hover); }
+.login-wrap { min-height: calc(100vh - 100px); display:flex; align-items:center; justify-content:center; }
+.login-card { width: 380px; max-width: 100%; border:0; border-radius:12px; box-shadow:0 4px 18px rgba(30,41,59,.12); }
+.form-card, .book-card { border:0; border-radius:12px; box-shadow:0 3px 14px rgba(30,41,59,.08); }
+.book-grid { display:grid; grid-template-columns:repeat(4, minmax(0, 1fr)); gap:20px; }
+.book-card { overflow:hidden; }
+.book-card h2 a { color:var(--text); text-decoration:none; }
+.book-cover, .detail-cover { width:100%; aspect-ratio:2/3; object-fit:cover; background:#fff; }
+.detail-cover { border-radius:12px; box-shadow:0 3px 14px rgba(30,41,59,.12); }
+.progress { height:8px; }
+.progress-bar { background:var(--primary); }
+.shelf-tabs .nav-link { color:var(--text); border-radius:999px; margin-right:6px; background:#fff; }
+.shelf-tabs .nav-link.active { background:var(--primary); }
+.badge.shelf-waiting { background:#94a3b8; }
+.badge.shelf-reading { background:var(--primary); }
+.badge.shelf-done { background:#198754; }
+.search-large { display:flex; gap:8px; }
+.search-large input { max-width:600px; }
+.forecast { background:#fff7ed; border-left:4px solid var(--primary); padding:10px 12px; border-radius:6px; }
+.stars input { display:none; }
+.stars label { cursor:pointer; color:#ffc107; font-size:1.6rem; }
+.stars input:checked ~ i { color:#ffc107; }
+
+@media (max-width: 992px) { .book-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } .nav-search { width:100%; margin:10px 0; } }
+@media (max-width: 576px) { .book-grid { grid-template-columns:1fr; } .login-wrap { align-items:flex-start; padding-top:40px; } .search-large { display:block; } .search-large .btn { width:100%; margin-top:8px; } }

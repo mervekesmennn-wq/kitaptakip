@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Kitap Ara - Kitap Takip{% endblock %}
+{% block content %}
+<h1 class="h3 mb-3">Kitap Ara</h1>
+<form class="search-large mb-4" action="{{ url_for('search') }}" method="get">
+  <input class="form-control" name="q" value="{{ query }}" placeholder="Kitap adı, yazar veya ISBN">
+  <button class="btn btn-primary">Ara</button>
+</form>
+{% if source_error %}
+  <div class="alert alert-warning">Şu an kitap aranamıyor, elle ekleyebilirsin.</div>
+{% elif query and not results %}
+  <div class="alert alert-warning">Kitap bulunamadı, elle ekleyebilirsin.</div>
+{% endif %}
+{% if manual_form %}
+<a class="btn btn-outline-primary mb-4" href="{{ url_for('add_manual') }}">Elle Kitap Ekle</a>
+{% endif %}
+<div class="book-grid">
+  {% for book in results %}
+  <article class="book-card card">
+    <img class="book-cover" src="{{ book.cover_url or '/static/kapaklar/default.svg' }}" alt="{{ book.title }}">
+    <div class="card-body">
+      <h2 class="h6">{{ book.title }}</h2>
+      <p class="text-muted small mb-3">{{ book.author or 'Yazar belirtilmemiş' }}{% if book.publisher %} · {{ book.publisher }}{% endif %}</p>
+      <form method="post" action="{{ url_for('add_search') }}">
+        <input type="hidden" name="title" value="{{ book.title }}">
+        <input type="hidden" name="author" value="{{ book.author }}">
+        <input type="hidden" name="publisher" value="{{ book.publisher }}">
+        <input type="hidden" name="cover_url" value="{{ book.cover_url }}">
+        <input type="hidden" name="source_url" value="{{ book.source_url }}">
+        <input type="hidden" name="isbn" value="{{ book.isbn }}">
+        <div class="d-flex gap-1 flex-wrap">
+          <button class="btn btn-sm btn-secondary" name="status" value="Okunacak">Okunacak</button>
+          <button class="btn btn-sm btn-primary" name="status" value="Okunuyor">Okunuyor</button>
+          <button class="btn btn-sm btn-success" name="status" value="Okundu">Okundu</button>
+        </div>
+      </form>
+    </div>
+  </article>
+  {% endfor %}
+</div>
+{% endblock %}

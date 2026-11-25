@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}İstatistik - Kitap Takip{% endblock %}
+{% block content %}
+<h1 class="h3 mb-4">İstatistik</h1>
+<div class="row g-3 mb-4">
+  <div class="col-md-6"><div class="card form-card"><div class="card-body"><h2 class="h6">Yıllık Hedef</h2><p class="h5 mb-0">{{ goal_status.message }}</p></div></div></div>
+  <div class="col-md-6"><div class="card form-card"><div class="card-body"><h2 class="h6">Okuma Serisi</h2><p class="h5 mb-0">{{ streak }} gün</p></div></div></div>
+</div>
+<div class="card form-card"><div class="card-body">
+  <h2 class="h6">{{ year }} Aylık Okunan Sayfa</h2>
+  <canvas id="pagesChart"></canvas>
+</div></div>
+{% endblock %}
+{% block scripts %}
+<script>
+new Chart(document.getElementById('pagesChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Oca','Şub','Mar','Nis','May','Haz','Tem','Ağu','Eyl','Eki','Kas','Ara'],
+    datasets: [{label:'Okunan sayfa', data: {{ monthly|tojson }}, backgroundColor:'#EC691F'}]
+  },
+  options:{responsive:true, plugins:{legend:{display:false}}}
+});
+</script>
+{% endblock %}

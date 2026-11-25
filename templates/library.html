@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Kitaplık - Kitap Takip{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h1 class="h3 mb-0">Kitaplık</h1>
+  <a class="btn btn-primary" href="{{ url_for('search') }}"><i class="bi bi-plus-lg"></i> Kitap Ara</a>
+</div>
+<ul class="nav nav-pills shelf-tabs mb-4">
+  {% for status in ("Okunacak", "Okunuyor", "Okundu") %}
+  <li class="nav-item">
+    <a class="nav-link {% if selected_status == status %}active{% endif %}" href="{{ url_for('library', raf=status) }}">
+      {{ status }}
+    </a>
+  </li>
+  {% endfor %}
+</ul>
+<div class="book-grid">
+  {% for book in books %}
+  <article class="book-card card">
+    <a href="{{ url_for('book_detail', book_id=book.id) }}">
+      <img class="book-cover" src="{{ book.cover_path or '/static/kapaklar/default.svg' }}" alt="{{ book.title }}">
+    </a>
+    <div class="card-body">
+      <h2 class="h6"><a href="{{ url_for('book_detail', book_id=book.id) }}">{{ book.title }}</a></h2>
+      <p class="text-muted small mb-2">{{ book.author or 'Yazar belirtilmemiş' }}</p>
+      <div class="progress mb-2" role="progressbar">
+        {% set percent = (book.current_page * 100 // book.page_count) if book.page_count else 0 %}
+        <div class="progress-bar" style="width: {{ percent }}%"></div>
+      </div>
+      <div class="d-flex justify-content-between align-items-center">
+        <span class="badge shelf-{{ 'waiting' if book.status == 'Okunacak' else ('reading' if book.status == 'Okunuyor' else 'done') }}">{{ book.status }}</span>
+        {% if book.source_url %}<a class="small" href="{{ book.source_url }}" target="_blank">Kitapyurdu'nda gör</a>{% endif %}
+      </div>
+    </div>
+  </article>
+  {% else %}
+  <p class="text-muted">Bu rafta kitap yok.</p>
+  {% endfor %}
+</div>
+{% endblock %}
